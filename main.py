@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 import numpy as np
-import pyautogui
+#import pyautogui
 import os
 import psutil
 import pandas as pd
@@ -10,10 +10,10 @@ from gtts import gTTS
 from openai import OpenAI
 from dotenv import load_dotenv
 
-#api_key = st.secrets["OPENAI_API_KEY"]
-#client = OpenAI(api_key=api_key)
-#if "OPENAI_API_KEY" not in st.secrets:
-#    st.error("API key missing in .streamlit/secrets.toml")
+api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=api_key)
+if "OPENAI_API_KEY" not in st.secrets:
+    st.error("API key missing in")
 
 
 # Load environment variables
