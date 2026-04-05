@@ -16,14 +16,8 @@ if "OPENAI_API_KEY" not in st.secrets:
     st.error("API key missing in")
 
 
-# Load environment variables
-#load_dotenv()
-#api_key = os.getenv("OPENAI_API_KEY")
-#client = OpenAI(api_key=api_key)
-
 #Page config
-st.set_page_config(page_title="Arabic AI Tutor",page_icon="📚",layout="centered")
-    
+st.set_page_config(page_title="Arabic AI Tutor",page_icon="📚",layout="centered")   
 st.sidebar.success("Select a demo above.")
 
 mode = st.selectbox(
