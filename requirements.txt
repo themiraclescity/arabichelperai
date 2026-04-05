@@ -1,0 +1,8 @@
+streamlit==1.56.0
+numpy==2.4.4
+PyAutoGUI==0.9.54
+psutil==7.2.2
+pandas==3.0.2
+openai==2.30.0
+python-dotenv==1.2.2
+
