@@ -6,7 +6,7 @@ import os
 #import psutil
 import pandas as pd
 #import speech_recognition as sr
-from gtts import gTTS
+#from gtts import gTTS
 from openai import OpenAI
 from dotenv import load_dotenv
 
