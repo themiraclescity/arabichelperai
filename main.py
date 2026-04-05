@@ -8,7 +8,7 @@ import pandas as pd
 #import speech_recognition as sr
 #from gtts import gTTS
 from openai import OpenAI
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
 api_key = st.secrets["OPENAI_API_KEY"]
 client = OpenAI(api_key=api_key)
@@ -17,9 +17,9 @@ if "OPENAI_API_KEY" not in st.secrets:
 
 
 # Load environment variables
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=api_key)
+#load_dotenv()
+#api_key = os.getenv("OPENAI_API_KEY")
+#client = OpenAI(api_key=api_key)
 
 #Page config
 st.set_page_config(page_title="Arabic AI Tutor",page_icon="📚",layout="centered")
