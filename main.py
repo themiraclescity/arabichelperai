@@ -5,7 +5,7 @@ import numpy as np
 import os
 #import psutil
 import pandas as pd
-import speech_recognition as sr
+#import speech_recognition as sr
 from gtts import gTTS
 from openai import OpenAI
 from dotenv import load_dotenv
