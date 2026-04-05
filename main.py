@@ -3,7 +3,7 @@ import time
 import numpy as np
 #import pyautogui
 import os
-import psutil
+#import psutil
 import pandas as pd
 import speech_recognition as sr
 from gtts import gTTS
