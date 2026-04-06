@@ -10,6 +10,9 @@ import pandas as pd
 from openai import OpenAI
 #from dotenv import load_dotenv
 
+from streamlit_TTS import openai_text_to_speech
+
+
 api_key = st.secrets["OPENAI_API_KEY"]
 client = OpenAI(api_key=api_key)
 if "OPENAI_API_KEY" not in st.secrets:
@@ -162,3 +165,12 @@ if st.button("حلل"):
     
 st.markdown(""" +++مساعد الاعراب+++ """)
 st.button("Re-run")
+
+
+
+# Use OpenAI TTS with different voices
+voice = st.selectbox("Choose voice", ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'])
+text = st.text_input("Enter text:")
+
+if st.button("Speak") and text:
+    openai_text_to_speech(text, voice=voice, model='gpt-4o-mini-tts')
