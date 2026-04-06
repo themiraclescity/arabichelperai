@@ -10,7 +10,7 @@ import pandas as pd
 from openai import OpenAI
 #from dotenv import load_dotenv
 
-from streamlit_TTS import text_to_audio, text_to_audio, auto_play
+from streamlit_TTS import text_to_speech, text_to_audio, auto_play
 
 
 api_key = st.secrets["OPENAI_API_KEY"]
