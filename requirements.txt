@@ -5,6 +5,4 @@ psutil==7.2.2
 pandas==3.0.2
 openai==2.30.0
 python-dotenv==1.2.2
-SpeechRecognition==
-gTTS==
-pydub==
+streamlit-TTS==0.0.8
