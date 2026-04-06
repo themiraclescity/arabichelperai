@@ -173,4 +173,28 @@ voice = st.selectbox("Choose voice", ['alloy', 'echo', 'fable', 'onyx', 'nova', 
 text = st.text_input("Enter text:")
 
 if st.button("Speak") and text:
-    openai_text_to_speech(text, voice=voice, model='gpt-4o-mini-tts')
+    openai_text_to_speech(text, openai_api_key=api_key, voice=voice, model='gpt-4o-mini-tts')
+    #openai_text_to_speech(text, language=None, wait=True, lag=0.25, key=None, voice='shimmer', model='gpt-4o-mini-tts')
+    #openai_text_to_audio(text, openai_api_key=api_key, language=None, cleanup_hook=None, voice='shimmer', model='gpt-4o-mini-tts')
+    
+# Custom text cleanup function
+def my_cleanup(text):
+    # Remove specific patterns
+    text = text.replace("[SPEAKER]", "")
+    return text.strip()
+
+# Generate audio with custom cleanup
+audio = text_to_audio(
+    "Some text with [SPEAKER] tags",
+    language='en',
+    cleanup_hook=my_cleanup
+)
+
+# Play the audio
+if audio:
+    auto_play(audio, wait=True, lag=0.5)
+    
+
+#linke
+#https://pypi.org/project/streamlit-TTS/
+    
