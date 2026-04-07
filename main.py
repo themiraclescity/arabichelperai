@@ -18,8 +18,6 @@ client = OpenAI(api_key=api_key)
 if "OPENAI_API_KEY" not in st.secrets:
     st.error("API key missing in")
 
-default_text2 = "Today is a wonderful"
-
 #Page config
 st.set_page_config(page_title="Arabic AI Tutor",page_icon="📚",layout="centered")
 #st.image("/static/cat.jpg", caption="Sunrise by the mountains")
@@ -123,55 +121,6 @@ else:
             """
 user_input = st.text_area("Enter Arabic sentence:", placeholder="ذهبت الولد الى المدرسة", value="ذهبت الولد الى المدرسة",)
 
-if st.button("حلل"):
-    if user_input:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "system",
-                    "content":system_prompt
-                },
-                {"role": "user", "content": user_input}
-            ]
-        )
-
-        #st.write(response.choices[0].message.content)
-        st.markdown("### ✨ نتيجة التحليل:")
-        result = response.choices[0].message.content
-        default_text2 = response.choices[0].message.content
-        if "📝" in result:
-            sections = result.split("\n")
-            for section in sections:
-                if "📝" in section:
-                    st.success(section)
-                elif "🧩" in section:
-                    st.warning(section)
-                elif "📘" in section:
-                    st.info(section)
-                else:
-                    st.write(section)
-        else:
-            st.write(result)
-
-
-# exit_app_button = st.button("Shut Down Browser and App")
-# if exit_app_button:
-    # st.warning("Closing the browser tab and terminating the app in 5 seconds...")
-    # time.sleep(5)  # Give user time to see the message
-    # # Simulate Ctrl+W (close tab)
-    # pyautogui.hotkey('ctrl', 'w')
-    # # Optionally, terminate the Python process as well
-    # pid = os.getpid()
-    # p = psutil.Process(pid)
-    # p.terminate()
-
-st.markdown(""" +++مساعد الاعراب+++ """)
-st.button("Re-run")
-
-#linke
-#https://pypi.org/project/streamlit-TTS/
-
 model = st.selectbox(
     "Model",
     [
@@ -208,6 +157,81 @@ response_format = st.selectbox(
     index=0,
 )
 
+if st.button("أعرب"):
+    if user_input:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content":system_prompt
+                },
+                {"role": "user", "content": user_input}
+            ]
+        )
+
+        #st.write(response.choices[0].message.content)
+        st.markdown("### ✨ نتيجة التحليل:")
+        result = response.choices[0].message.content
+        if "📝" in result:
+            sections = result.split("\n")
+            for section in sections:
+                if "📝" in section:
+                    st.success(section)
+                elif "🧩" in section:
+                    st.warning(section)
+                elif "📘" in section:
+                    st.info(section)
+                else:
+                    st.write(section)
+        else:
+            st.write(result)
+        # Call OpenAI TTS endpoint
+        response = client.audio.speech.create(
+            model=model,
+            voice=voice,
+            input=result,
+            response_format=response_format,
+            instructions=instructions if instructions.strip() else None,
+        )
+
+        # response is bytes-like for audio
+        audio_bytes = response.read()
+        st.success("Audio generated!")
+        # Play audio in the browser
+        st.audio(audio_bytes, format=f"audio/{response_format}")
+        st.write("Audio size:", len(audio_bytes))
+        # Save to disk
+        temp_path = f"speech.{response_format}"
+        response.write_to_file(temp_path)
+
+        # Read file back into Streamlit
+        with open(temp_path, "rb") as f:
+            audio_bytes = f.read()
+
+        st.audio(audio_bytes, format=f"audio/{response_format}", autoplay=True)
+        st.write(temp_path)
+
+
+# exit_app_button = st.button("Shut Down Browser and App")
+# if exit_app_button:
+    # st.warning("Closing the browser tab and terminating the app in 5 seconds...")
+    # time.sleep(5)  # Give user time to see the message
+    # # Simulate Ctrl+W (close tab)
+    # pyautogui.hotkey('ctrl', 'w')
+    # # Optionally, terminate the Python process as well
+    # pid = os.getpid()
+    # p = psutil.Process(pid)
+    # p.terminate()
+
+st.markdown(""" +++مساعد الاعراب+++ """)
+st.button("Re-run")
+
+#linke
+#https://pypi.org/project/streamlit-TTS/
+
+
+
 instructions = st.text_area(
     "Optional speaking instructions",
     value="Speak in a clear, natural tone.",
@@ -218,8 +242,7 @@ instructions = st.text_area(
 default_text = "Today is a wonderful day to build something people love!"
 text = st.text_area(
     "Text to convert to speech",
-    #value=default_text,
-    value=default_text2,
+    value=default_text,
     height=150,
 )
 
