@@ -21,7 +21,7 @@ if "OPENAI_API_KEY" not in st.secrets:
 
 #Page config
 st.set_page_config(page_title="Arabic AI Tutor",page_icon="📚",layout="centered")
-st.image("/static/cat.jpg", caption="Sunrise by the mountains")
+#st.image("/static/cat.jpg", caption="Sunrise by the mountains")
 st.sidebar.success("Select a demo above.")
 
 mode = st.selectbox(
