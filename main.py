@@ -18,6 +18,7 @@ client = OpenAI(api_key=api_key)
 if "OPENAI_API_KEY" not in st.secrets:
     st.error("API key missing in")
 
+default_text2 = "Today is a wonderful"
 
 #Page config
 st.set_page_config(page_title="Arabic AI Tutor",page_icon="📚",layout="centered")
@@ -138,6 +139,7 @@ if st.button("حلل"):
         #st.write(response.choices[0].message.content)
         st.markdown("### ✨ نتيجة التحليل:")
         result = response.choices[0].message.content
+        default_text2 = response.choices[0].message.content
         if "📝" in result:
             sections = result.split("\n")
             for section in sections:
@@ -217,7 +219,7 @@ default_text = "Today is a wonderful day to build something people love!"
 text = st.text_area(
     "Text to convert to speech",
     #value=default_text,
-    value=result,
+    value=default_text2,
     height=150,
 )
 
