@@ -216,7 +216,8 @@ instructions = st.text_area(
 default_text = "Today is a wonderful day to build something people love!"
 text = st.text_area(
     "Text to convert to speech",
-    value=default_text,
+    #value=default_text,
+    value=result,
     height=150,
 )
 
