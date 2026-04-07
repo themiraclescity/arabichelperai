@@ -169,3 +169,102 @@ st.button("Re-run")
 
 #linke
 #https://pypi.org/project/streamlit-TTS/
+
+model = st.selectbox(
+    "Model",
+    [
+        "gpt-4o-mini-tts",  # newest TTS model
+        "tts-1",
+        "tts-1-hd",
+    ],
+    index=0,
+)
+
+voice = st.selectbox(
+    "Voice",
+    [
+        "alloy",
+        "ash",
+        "ballad",
+        "coral",
+        "echo",
+        "fable",
+        "nova",
+        "onyx",
+        "sage",
+        "shimmer",
+        "verse",
+        "marin",
+        "cedar",
+    ],
+    index=0,
+)
+
+response_format = st.selectbox(
+    "Audio format",
+    ["mp3", "wav", "aac", "flac", "opus"],
+    index=0,
+)
+
+instructions = st.text_area(
+    "Optional speaking instructions",
+    value="Speak in a clear, natural tone.",
+    help="You can guide style, tone, speed, etc.",
+)
+
+# ---- Main input ----
+default_text = "Today is a wonderful day to build something people love!"
+text = st.text_area(
+    "Text to convert to speech",
+    value=default_text,
+    height=150,
+)
+
+generate_button = st.button("Generate speech")
+
+# ---- TTS generation ----
+if generate_button:
+    if not text.strip():
+        st.warning("Please enter some text first.")
+    else:
+        with st.spinner("Generating audio..."):
+            # Call OpenAI TTS endpoint
+            response = client.audio.speech.create(
+                model=model,
+                voice=voice,
+                input=text,
+                response_format=response_format,
+                instructions=instructions if instructions.strip() else None,
+            )
+
+            # response is bytes-like for audio
+            audio_bytes = response.read()
+            st.success("Audio generated!")
+            # Play audio in the browser
+            st.audio(audio_bytes, format=f"audio/{response_format}")
+            st.write("Audio size:", len(audio_bytes))
+            # Save to disk
+            temp_path = f"speech.{response_format}"
+            response.write_to_file(temp_path)
+
+            # Read file back into Streamlit
+            with open(temp_path, "rb") as f:
+                audio_bytes = f.read()
+
+            st.audio(audio_bytes, format=f"audio/{response_format}", autoplay=True)
+            st.write(temp_path)
+
+        # Download button
+        st.download_button(
+            label="Download audio",
+            data=audio_bytes,
+            file_name=f"speech.{response_format}",
+            mime=f"audio/{response_format}",
+        )
+
+st.markdown(
+    """
+---
+**Note:** The voice you hear is AI‑generated using OpenAI's text‑to‑speech API.
+"""
+)
