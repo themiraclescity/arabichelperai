@@ -9,8 +9,8 @@ import pandas as pd
 #from gtts import gTTS
 from openai import OpenAI
 #from dotenv import load_dotenv
-
 from streamlit_TTS import text_to_speech, text_to_audio, auto_play
+from pathlib import Path
 
 
 api_key = st.secrets["OPENAI_API_KEY"]
@@ -20,7 +20,8 @@ if "OPENAI_API_KEY" not in st.secrets:
 
 
 #Page config
-st.set_page_config(page_title="Arabic AI Tutor",page_icon="📚",layout="centered")   
+st.set_page_config(page_title="Arabic AI Tutor",page_icon="📚",layout="centered")
+st.image("/static/cat.jpg", caption="Sunrise by the mountains")
 st.sidebar.success("Select a demo above.")
 
 mode = st.selectbox(
@@ -56,7 +57,7 @@ elif mode == "تشكيل الكلمات فقط":
             1. اكتشف الأخطاء الإملائية وصححها
             2. صحح الأخطاء النحوية
             3. أعد كتابة الجملة مع التشكيل الكامل
-                        
+
             استخدم التنسيق التالي:
 
             📝 الجملة بعد التصحيح الإملائي والنحوي والتشكيل:
@@ -77,7 +78,7 @@ elif mode == "أعراب فقط":
             2. صحح الأخطاء النحوية
             3. أعد كتابة الجملة مع التشكيل الكامل
             4. قم بإعراب كل كلمة
-            
+
             استخدم التنسيق التالي:
 
             📝 الجملة بعد التصحيح الإملائي والنحوي والتشكيل:
@@ -87,7 +88,7 @@ elif mode == "أعراب فقط":
             (إعراب كل كلمة)
             """
 else:
-    system_prompt = """ 
+    system_prompt = """
              أنت معلم لغة عربية خبير في:
             - الإملاء
             - النحو
@@ -128,7 +129,7 @@ if st.button("حلل"):
             messages=[
                 {
                     "role": "system",
-                    "content":system_prompt 
+                    "content":system_prompt
                 },
                 {"role": "user", "content": user_input}
             ]
@@ -161,8 +162,8 @@ if st.button("حلل"):
     # # Optionally, terminate the Python process as well
     # pid = os.getpid()
     # p = psutil.Process(pid)
-    # p.terminate()    
-    
+    # p.terminate()
+
 st.markdown(""" +++مساعد الاعراب+++ """)
 st.button("Re-run")
 
@@ -176,7 +177,7 @@ if st.button("Speak") and text:
     openai_text_to_speech(text, openai_api_key=api_key, voice=voice, model='gpt-4o-mini-tts')
     #openai_text_to_speech(text, language=None, wait=True, lag=0.25, key=None, voice='shimmer', model='gpt-4o-mini-tts')
     #openai_text_to_audio(text, openai_api_key=api_key, language=None, cleanup_hook=None, voice='shimmer', model='gpt-4o-mini-tts')
-    
+
 # Custom text cleanup function
 def my_cleanup(text):
     # Remove specific patterns
@@ -193,8 +194,7 @@ audio = text_to_audio(
 # Play the audio
 if audio:
     auto_play(audio, wait=True, lag=0.5)
-    
+
 
 #linke
 #https://pypi.org/project/streamlit-TTS/
-    
